@@ -1,0 +1,440 @@
+/* =========================================================
+   1. VARIABLES GLOBALES Y RESET
+   ========================================================= */
+:root {
+  --color-primario: #2563eb;
+  --color-primario-hover: #1d4ed8;
+  --color-fondo: #f1f5f9;
+  --color-tarjeta: #ffffff;
+  --color-texto: #0f172a;
+  --color-texto-suave: #64748b;
+  --color-borde: #cbd5e1;
+  --color-error: #ef4444;
+  --color-error-fondo: #fee2e2;
+  --radio: 10px;
+  --sombra: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.oculto {
+  display: none !important;
+}
+
+/* =========================================================
+   2. HEADER PRINCIPAL
+   ========================================================= */
+header {
+  background-color: var(--color-tarjeta);
+  border-bottom: 1px solid var(--color-borde);
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+/* =========================================================
+   3. CONTENEDOR PRINCIPAL
+   ========================================================= */
+main {
+  width: 92%;
+  max-width: 900px;
+  margin: 2rem auto;
+  flex: 1;
+}
+
+/* =========================================================
+   4. SECCIÓN: INICIO DE SESIÓN (#seccion_login)
+   ========================================================= */
+.inicio_sesion {
+  background: var(--color-tarjeta);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 2.2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+}
+
+.inicio_sesion h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.inicio_sesion form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.inicio_sesion label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+
+.inicio_sesion input[type="text"],
+.inicio_sesion input[type="password"] {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.inicio_sesion input:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+#boton_login {
+  background-color: var(--color-primario);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.6rem;
+  transition: background-color 0.2s;
+}
+
+#boton_login:hover:not(:disabled) {
+  background-color: var(--color-primario-hover);
+}
+
+#boton_login:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#error {
+  color: var(--color-error);
+  font-size: 0.85rem;
+  text-align: center;
+  min-height: 1.2rem;
+}
+
+/* =========================================================
+   5. SECCIÓN: MOSTRAR DATOS (#seccion_perfil)
+   ========================================================= */
+.mostrar_datos {
+  background: var(--color-tarjeta);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 2rem;
+  position: relative;
+}
+
+.mostrar_datos > h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+#boton_logout {
+  position: absolute;
+  top: 1.8rem;
+  right: 2rem;
+  background: transparent;
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+#boton_logout:hover {
+  background: var(--color-error-fondo);
+}
+
+/* 5.1 PERFIL DE USUARIO (#contenedor_perfil) */
+#contenedor_perfil {
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 1.2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.4rem;
+}
+
+.avatar {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  border: 3px solid var(--color-primario);
+  object-fit: cover;
+  background-color: #e2e8f0;
+  margin-bottom: 0.4rem;
+}
+
+#perfil_nombre {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+#contenedor_perfil p {
+  font-size: 0.9rem;
+  color: var(--color-texto-suave);
+}
+
+#contenedor_perfil p strong {
+  color: var(--color-texto);
+}
+
+/* 5.2 SECCIÓN DE TAREAS (#contenedor_tareas) */
+#contenedor_tareas > h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+/* Métricas / Contadores */
+.contenedor_metricas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.caja_metrica {
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.caja_metrica p {
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+  text-transform: uppercase;
+}
+
+.caja_metrica span {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  display: block;
+  margin-top: 0.2rem;
+}
+
+/* Formulario Agregar Tarea */
+#form_agregar_tarea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+#form_agregar_tarea label {
+  width: 100%;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+#campo_nueva_tarea {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+#campo_nueva_tarea:focus {
+  border-color: var(--color-primario);
+}
+
+#boton_agregar_tarea {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.65rem 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#boton_agregar_tarea:hover {
+  background-color: var(--color-primario-hover);
+}
+
+/* Buscador y Controles de Filtro */
+#contenedor_tareas > div:not(.contenedor_metricas) > label[for="buscador_tarea"] {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+#buscador_tarea {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+  outline: none;
+}
+
+#buscador_tarea:focus {
+  border-color: var(--color-primario);
+}
+
+#filtros_contenedor {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.boton_filtro {
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  color: var(--color-texto-suave);
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.boton_filtro:hover {
+  background-color: #e2e8f0;
+}
+
+.boton_filtro.activo {
+  background-color: var(--color-primario);
+  color: #ffffff;
+  border-color: var(--color-primario);
+}
+
+/* =========================================================
+   6. LISTA DE TAREAS (#lista_tareas)
+   ========================================================= */
+#lista_tareas {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+#lista_tareas li {
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 0.2s;
+}
+
+#lista_tareas li:hover {
+  border-color: #94a3b8;
+}
+
+#lista_tareas label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+#lista_tareas input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--color-primario);
+}
+
+.completada {
+  text-decoration: line-through;
+  color: var(--color-texto-suave);
+}
+
+.boton_eliminar {
+  background: none;
+  border: none;
+  color: var(--color-error);
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.boton_eliminar:hover {
+  background-color: var(--color-error-fondo);
+}
+
+/* =========================================================
+   7. RESPONSIVE DESIGN (PANTALLAS PEQUEÑAS)
+   ========================================================= */
+@media (max-width: 600px) {
+  header {
+    padding: 1rem;
+  }
+
+  .mostrar_datos {
+    padding: 1.2rem;
+  }
+
+  #boton_logout {
+    position: static;
+    margin-bottom: 1.2rem;
+    width: 100%;
+  }
+
+  .contenedor_metricas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #form_agregar_tarea {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #filtros_contenedor {
+    width: 100%;
+  }
+
+  .boton_filtro {
+    flex: 1;
+    text-align: center;
+  }
+}

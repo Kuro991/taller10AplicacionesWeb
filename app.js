@@ -32,6 +32,11 @@ const buscadorTarea = document.querySelector("#buscador_tarea");
 const filtrosContenedor = document.querySelector("#filtros_contenedor");
 const listaTareas = document.querySelector("#lista_tareas");
 
+// variables para agregar tareas
+const formAgregarTarea = document.querySelector("#form_agregar_tarea");
+const campoNuevaTarea = document.querySelector("#campo_nueva_tarea");
+const botonAgregarTarea = document.querySelector("#boton_agregar_tarea");
+
 // login
 form.addEventListener("submit", (e) =>{
   e.preventDefault();
@@ -184,9 +189,13 @@ function renderizarTareas() {
   const htmlTareas = tareasOrdenadas.map((tarea) => {
     return `
       <li data-id="${tarea.id}">
-        <span class="${tarea.completed ? 'completada' : ''}">
-          ${tarea.todo}
-        </span>
+        <label>
+          <input type="checkbox" class="casilla_completar" ${tarea.completed ? "checked" : ""}>
+          <span class="${tarea.completed ? 'completada' : ''}">
+            ${tarea.todo}
+          </span>
+        </label>
+        <button type="button" class="boton_eliminar"">X</button>
       </li>
     `;
   }).join("");
@@ -194,7 +203,7 @@ function renderizarTareas() {
   listaTareas.innerHTML = htmlTareas;
 }
 
-// Evento de búsqueda por texto
+// busqueda por texto
 buscadorTarea.addEventListener("input", (e) => {
   textoBuscado = e.target.value;
   renderizarTareas();
@@ -212,6 +221,103 @@ filtrosContenedor.addEventListener("click", (e) => {
   renderizarTareas();
 });
 
+// agregar tarea
+formAgregarTarea.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const texto = campoNuevaTarea.value.trim();
+  if (!texto) return;
+
+  botonAgregarTarea.disabled = true;
+
+  try {
+    const res = await fetch(`${API}todos/add`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        todo: texto,
+        completed: false,
+        userId: usuarioActual.id,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("No se pudo agregar la tarea");
+    }
+
+    const nuevaTarea = await res.json();
+
+    nuevaTarea.id = Date.now();
+    nuevaTarea.esLocal = true;
+
+    arregloTareas.unshift(nuevaTarea);
+
+    campoNuevaTarea.value = "";
+    renderizarTareas(); 
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  } finally {
+    botonAgregarTarea.disabled = false;
+  }
+});
+
+listaTareas.addEventListener("click", async (e) => {
+  const elementoLi = e.target.closest("li");
+  if (!elementoLi) return;
+
+  const idTarea = Number(elementoLi.dataset.id);
+
+  // ubica tarea en memoria
+  const tareaSeleccionada = arregloTareas.find((t) => t.id === idTarea);
+  if (!tareaSeleccionada) return;
+
+  // marcar como completado o pendiente
+  if (e.target.classList.contains("casilla_completar")) {
+    const nuevoEstado = e.target.checked;
+
+    try {
+      if (!tareaSeleccionada.esLocal) {
+        const res = await fetch(`${API}todos/${idTarea}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ completed: nuevoEstado }),
+        });
+
+        if (!res.ok) {
+          throw new Error("Error al actualizar la tarea en el servidor");
+        }
+      }
+
+      tareaSeleccionada.completed = nuevoEstado;
+      renderizarTareas(); 
+    } catch (err) {
+      console.error(err);
+      e.target.checked = !nuevoEstado;
+    }
+  }
+
+  // eliminar tarea
+  if (e.target.classList.contains("boton_eliminar")) {
+    try {
+      if (!tareaSeleccionada.esLocal) {
+        const res = await fetch(`${API}todos/${idTarea}`, {
+          method: "DELETE",
+        });
+
+        if (!res.ok) {
+          throw new Error("Error al eliminar la tarea en el servidor");
+        }
+      }
+
+      // sacar tarea del arreglo
+      arregloTareas = arregloTareas.filter((t) => t.id !== idTarea);
+      renderizarTareas();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+});
 
 // evento cargar pagina
 

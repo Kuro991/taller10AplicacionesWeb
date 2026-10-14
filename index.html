@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taller semana 10</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
@@ -50,6 +51,13 @@
                 </div>
 
                 <div>
+                    <!-- Agregar tarea-->
+                    <form id="form_agregar_tarea">
+                        <label for="campo_nueva_tarea">Escribe una nueva tarea: </label>
+                        <input type="text" id="campo_nueva_tarea">
+                        <button type="submit" id="boton_agregar_tarea">Agregar tarea</button>
+                    </form>
+
                     <label for="buscador_tarea">Buscador de tarea</label>
                     <input id="buscador_tarea" type="text" placeholder="Buscar por texto...">
                     <div id="filtros_contenedor">
