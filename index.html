@@ -29,12 +29,41 @@
             <h2>Mis datos</h2>
             <button type="button" id="boton_logout">Cerrar sesion</button>
 
+            <!-- Perfil -->
             <div id="contenedor_perfil">
-                <img id="perfil_foto" src="" alt="Foto de perfil" class="avatar">
+                <img id="perfil_foto" alt="Foto de perfil" class="avatar">
                 <h3 id="perfil_nombre"></h3>
                 <p><strong>Correo:</strong> <span id="perfil_correo"></span> </p>
                 <p><strong>Telefono:</strong> <span id="perfil_telefono"></span></p>
                 <p><strong>Universidad:</strong> <span id="perfil_universidad"></span></p>
+            </div>
+
+            <!-- Tareas-->
+            <div id="contenedor_tareas">
+                <h2>Mis Tareas</h2>
+
+                <div class="contenedor_metricas">
+                    <div class="caja_metrica"><p><strong>Total:</strong></p> <span id="metrica_total">0</span></div>
+                    <div class="caja_metrica"><p><strong>Completadas:</strong></p> <span id="metrica_completadas">0</span></div>
+                    <div class="caja_metrica"><p><strong>Pendientes:</strong></p> <span id="metrica_pendientes">0</span></div>
+                    <div class="caja_metrica"><p><strong>Avance:</strong></p> <span id="metrica_avance">0%</span></div>
+                </div>
+
+                <div>
+                    <label for="buscador_tarea">Buscador de tarea</label>
+                    <input id="buscador_tarea" type="text" placeholder="Buscar por texto...">
+                    <div id="filtros_contenedor">
+                        <button type="button" class="boton_filtro activo" data-filtro="todas">Todas</button>
+                        <button type="button" class="boton_filtro" data-filtro="pendientes">Pendientes</button>
+                        <button type="button" class="boton_filtro" data-filtro="completadas">Completadas</button>
+                    </div>
+                </div>
+
+                <!-- Lista tareas-->
+                <ul id="lista_tareas">
+
+                </ul>
+
             </div>
 
         </section>
