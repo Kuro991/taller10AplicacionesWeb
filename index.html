@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller semana 10</title>
+</head>
+<body>
+    <header>
+        <h1>Inicio de sesion - Taller 10</h1>
+    </header>
+    <main>
+        <!-- Login -->
+        <section class="inicio_sesion" id="seccion_login">
+            <h2>Iniciar sesion</h2>
+            <form id="form" method="post">
+                <label for="texto_usuario">Ingresar nombre de usuario:</label>
+                <input type="text" name="usuario" id="texto_usuario" required>
+
+                <label for="texto_contrasena">Ingresar contraseña</label>
+                <input type="password" name="contrasena" id="texto_contrasena" required>
+
+                <button type="submit" id="boton_login">Iniciar sesion</button>
+                <p id="error"></p>
+            </form>
+
+        </section>
+
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
