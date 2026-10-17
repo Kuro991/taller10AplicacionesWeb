@@ -135,8 +135,18 @@ function cerrarSesion() {
 botonLogout.addEventListener("click", cerrarSesion);
 
 // Tareas, metricas y filtros
-
 async function obtenerTareas(idUsuario) {
+  const claveStorage = `tareas_usuario_${idUsuario}`;
+  const tareasGuardadas = localStorage.getItem(claveStorage);
+
+  // si ya existen tareas en localStorage
+  if (tareasGuardadas) {
+    arregloTareas = JSON.parse(tareasGuardadas);
+    renderizarTareas();
+    return;
+  }
+
+  // si no hay nada guardado, se le pide a la API
   try {
     const res = await fetch(`${API}todos/user/${idUsuario}`);
     if (!res.ok) {
@@ -145,6 +155,7 @@ async function obtenerTareas(idUsuario) {
 
     const data = await res.json();
     arregloTareas = data.todos || [];
+    guardarTareasEnAlmacenamiento();
     renderizarTareas();
   } catch (err) {
     console.error(err);
@@ -247,11 +258,14 @@ formAgregarTarea.addEventListener("submit", async (e) => {
 
     const nuevaTarea = await res.json();
 
-    nuevaTarea.id = Date.now();
+    const maxId = arregloTareas.length > 0
+      ? Math.max(...arregloTareas.map((t) => Number(t.id)))
+      : 0;
+    nuevaTarea.id = maxId + 1;
     nuevaTarea.esLocal = true;
 
     arregloTareas.unshift(nuevaTarea);
-
+    guardarTareasAlmacenamiento();
     campoNuevaTarea.value = "";
     renderizarTareas(); 
   } catch (err) {
@@ -261,6 +275,12 @@ formAgregarTarea.addEventListener("submit", async (e) => {
     botonAgregarTarea.disabled = false;
   }
 });
+
+function guardarTareasAlmacenamiento(){
+  if(usuarioActual){
+    localStorage.setItem(`tareas_usuario_${usuarioActual.id}`, JSON.stringify(arregloTareas));
+  }
+}
 
 listaTareas.addEventListener("click", async (e) => {
   const elementoLi = e.target.closest("li");
@@ -290,6 +310,7 @@ listaTareas.addEventListener("click", async (e) => {
       }
 
       tareaSeleccionada.completed = nuevoEstado;
+      guardarTareasAlmacenamiento();
       renderizarTareas(); 
     } catch (err) {
       console.error(err);
@@ -312,6 +333,7 @@ listaTareas.addEventListener("click", async (e) => {
 
       // sacar tarea del arreglo
       arregloTareas = arregloTareas.filter((t) => t.id !== idTarea);
+      guardarTareasAlmacenamiento();
       renderizarTareas();
     } catch (err) {
       console.error(err);
@@ -328,3 +350,5 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// usar id diferente a date now para nuevas tareas
+// guardar en almacenamiento local el arreglo
