@@ -141,9 +141,13 @@ async function obtenerTareas(idUsuario) {
 
   // si ya existen tareas en localStorage
   if (tareasGuardadas) {
-    arregloTareas = JSON.parse(tareasGuardadas);
-    renderizarTareas();
-    return;
+    const tareasParseadas = JSON.parse(tareasGuardadas);
+
+    if (Array.isArray(tareasParseadas) && tareasParseadas.length > 0) {
+      arregloTareas = JSON.parse(tareasGuardadas);
+      renderizarTareas();
+      return;
+    }
   }
 
   // si no hay nada guardado, se le pide a la API
@@ -155,7 +159,7 @@ async function obtenerTareas(idUsuario) {
 
     const data = await res.json();
     arregloTareas = data.todos || [];
-    guardarTareasEnAlmacenamiento();
+    guardarTareasAlmacenamiento();
     renderizarTareas();
   } catch (err) {
     console.error(err);
